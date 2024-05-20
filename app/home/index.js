@@ -5,12 +5,18 @@ import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { theme } from '../../constants/theme'
 import { wp, hp } from '../../helper/common'
 import { ScrollView } from 'react-native';
+import Categories from '../../components/categories'
 
 const HomeScreen = () => {
     const { top } = useSafeAreaInsets();
     const paddingTop = top > 0 ? top + 10 : 30;
     const [search, setSearch] = useState('');
+    const [activeCategory,setActiveCategory] = useState(null);
     const searchInputRef = useRef(null);
+
+    const handleChangeCategory = (cat) => {
+        setActiveCategory(cat);
+    } 
     return (
         <View style={[styles.container, { paddingTop }]}>
 
@@ -37,9 +43,9 @@ const HomeScreen = () => {
                     <TextInput
                         placeholder='Search For Photos....'
                         value={search}
+                        ref={searchInputRef}
                         onChangeText={value => setSearch(value)}
                         style={styles.searchInput}
-                        ref={searchInputRef}
                     />
                     {
                         search && (
@@ -49,10 +55,12 @@ const HomeScreen = () => {
 
                         )
                     }
-                </View> 
+                </View>
 
                 {/* Categories */}
-
+                <View style={styles.categories}>
+                    <Categories activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />
+                </View>
             </ScrollView>
         </View>
     )
